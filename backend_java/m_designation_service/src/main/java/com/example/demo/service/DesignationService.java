@@ -1,9 +1,15 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.DesignationDTO;
+import com.example.demo.entity.Designation;
+import com.example.demo.proxy.DepartmentProxy;
+import com.example.demo.repository.DesignationRepository;
 
 @Service
 public class DesignationService {
@@ -23,6 +29,7 @@ public class DesignationService {
 		
 		List<DesignationDTO> list=new ArrayList<DesignationDTO>();
 		for(Designation designation:designationRepository.findAll()) {
+			if(designation.getDeptId()==null) continue;
 			
 			DepartmentDTO department=departmentProxy.get(designation.getDeptId());
 			

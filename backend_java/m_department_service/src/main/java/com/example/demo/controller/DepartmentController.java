@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.entity.Department;
+import com.example.demo.service.DepartmentService;
 
 @RestController
 @RequestMapping("/department")
@@ -28,13 +32,17 @@ public class DepartmentController {
 		return departmentService.getAll();
 	}
 	
-	@GetMapping("/eager/{deptId}")
+	@GetMapping("/designation/{deptId}")
 	public DepartmentDTO getAllEager(@PathVariable Long deptId) {
+		Department department=get(deptId);
 		
-		DepartmentDTO department=new DepartmentDTO();
-		department.setDesignations(departmentService.getAllEager(deptId));
+		DepartmentDTO departmentDTO=new DepartmentDTO();
+		departmentDTO.setId(department.getId());
+		departmentDTO.setName(department.getName());
 		
-		return department;
+		departmentDTO.setDesignations(departmentService.getAllEager(deptId));
+		
+		return departmentDTO;
 	}
 	
 	@GetMapping("/{id}")

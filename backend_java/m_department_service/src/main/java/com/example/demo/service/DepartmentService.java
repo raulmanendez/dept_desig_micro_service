@@ -1,10 +1,15 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.DesignationDTO;
+import com.example.demo.entity.Department;
+import com.example.demo.proxy.DesignationProxy;
+import com.example.demo.repository.DepartmentRepository;
 
 @Service
 public class DepartmentService {

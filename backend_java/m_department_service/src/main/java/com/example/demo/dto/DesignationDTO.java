@@ -1,9 +1,9 @@
-package com.example.demo;
+package com.example.demo.dto;
+
 
 public class DesignationDTO {
 	
 	private Long id;
-	private DepartmentDTO department;
 	private String name;
 	
 	public Long getId() {
@@ -11,12 +11,6 @@ public class DesignationDTO {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public DepartmentDTO getDepartment() {
-		return department;
-	}
-	public void setDepartment(DepartmentDTO department) {
-		this.department = department;
 	}
 	public String getName() {
 		return name;
