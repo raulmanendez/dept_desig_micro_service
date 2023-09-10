@@ -39,6 +39,11 @@ services:
     restart: no    
     environment:
       - "spring.profiles.active=docker"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8080"]
+        interval: 3s
+        retries: 5
+        start_period: 30s
     networks:
       - dept-desig-micro-network
     depends_on:
@@ -74,6 +79,18 @@ services:
         condition: service_healthy
     # ports:
     #   - 8082:8082
+  webapp:
+    build:
+      context: ../frontend-angular
+    container_name: dept-desig-webapp
+    restart: no    
+    networks:
+      - dept-desig-micro-network
+    depends_on:
+      gateway:
+        condition: service_healthy
+    ports:
+      - 8000:80
 networks:
   dept-desig-micro-network: {}
 volumes:

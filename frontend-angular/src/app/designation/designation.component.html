@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Add Designation Information</h3>
+        </div>
+  
+        <div class="card-body">
+          <form [formGroup]="designationForm" (ngSubmit)="add()" class="">
+            <input formControlName="id" type="hidden">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <select formControlName="deptId" class="form-control">
+                        <option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</option>
+                    </select>
+
+                    <span class="error" *ngIf="submitted && designationForm.controls['deptId'].errors?.['required']">You should select a department</span>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <input formControlName="name" type="text" class="form-control" placeholder="Designation Name">
+
+                <span class="error" *ngIf="submitted && designationForm.controls['name'].errors?.['required']">You should enter designation name</span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Existing Designations</h3>
+        </div>
+        <div class="card-body">
+  
+  
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Sr No</th>
+                <th>Department</th>
+                <th>Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let designation of designations">
+                <td>{{ designation.id }}</td>
+                <td>{{ designation.department.name }}</td>
+                <td>{{ designation.name }}</td>
+                <td>
+                  <a class="btn btn-warning m-2" (click)="update(designation.id)">Update</a>
+                  <a class="btn btn-danger m-2" (click)="delete(designation.id)">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

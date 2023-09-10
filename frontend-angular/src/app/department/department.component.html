@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Add Department Information</h3>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="departmentForm" (ngSubmit)="add()" class="form">
+          <div class="row">
+            <div class="col-sm-8">
+              <input formControlName="id" type="hidden">
+              <input formControlName="name" type="text" class="form-control" placeholder="Department Name">
+              
+              <span class="error" *ngIf="submitted && departmentForm.controls['name'].errors['required']">You should enter department name</span>
+            </div>
+
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Existing Departments</h3>
+      </div>
+      <div class="card-body">
+
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dept of departments">
+              <td>{{ dept.id }}</td>
+              <td>{{ dept.name }}</td>
+              <td>
+                <a class="btn btn-warning m-2" (click)="update(dept.id)">Update</a>
+                <a class="btn btn-danger m-2" (click)="delete(dept.id)">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
