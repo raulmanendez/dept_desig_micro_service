@@ -1,0 +1,80 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    container_name: database
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+        interval: 3s
+        retries: 5
+        start_period: 30s
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    networks:
+      - dept-desig-micro-network
+    expose:
+        - 3306
+        - 33060
+  eureka:
+    build:
+      context: ./m_eureka_server/
+    container_name: eureka-server-container
+    restart: no    
+    environment:
+      - "spring.profiles.active=default"
+    networks:
+      - dept-desig-micro-network
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8761:8761
+  gateway:
+    build:
+      context: ./m_gateway/
+    container_name: gateway-container
+    restart: no    
+    environment:
+      - "spring.profiles.active=docker"
+    networks:
+      - dept-desig-micro-network
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+  department-service:
+    build:
+      context: ./m_department_service/
+    container_name: department-service-container
+    restart: no    
+    environment:
+      - "spring.profiles.active=docker"
+    networks:
+      - dept-desig-micro-network
+    depends_on:
+      db:
+        condition: service_healthy
+    # ports:
+    #   - 8081:8081     
+  designation-service:
+    build:
+      context: ./m_designation_service/
+    container_name: designation-service-container
+    restart: no    
+    environment:
+      - "spring.profiles.active=docker"
+    networks:
+      - dept-desig-micro-network
+    depends_on:
+      db:
+        condition: service_healthy
+    # ports:
+    #   - 8082:8082
+networks:
+  dept-desig-micro-network: {}
+volumes:
+  mysql_volume:
