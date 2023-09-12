@@ -91,6 +91,27 @@ services:
         condition: service_healthy
     ports:
       - 8000:80
+  traefik:
+    image: traefik:v2.5
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.insecure=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8181:8080"
+    networks:
+      - dept-desig-micro-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/traefik.yml
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`traefik.dev`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
 networks:
   dept-desig-micro-network: {}
 volumes:

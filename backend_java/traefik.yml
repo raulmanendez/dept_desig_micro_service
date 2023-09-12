@@ -1,0 +1,65 @@
+api:
+  dashboard: true  # Enable the Traefik dashboard
+  insecure: true   # For simplicity; don't use in production
+
+entryPoints:
+  web:
+    address: ":80"
+  # http:
+  #   address: ":80"
+  # https:
+  #   address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false  # Only expose services explicitly
+    
+log:
+  level: INFO  # Adjust the log level as needed
+
+accessLog: {}  # Enable access logs
+
+# Configuration for the Traefik dashboard itself
+dashboard:
+  enabled: true
+  domain: "traefik.dev"  # Replace with your desired domain
+  address: ":8181"  # Port for the dashboard
+  
+# certificatesResolvers:
+#   myresolver:
+#     acme:
+#       email: "your-email@example.com"  # Enter your email address for Let's Encrypt notifications
+#       storage: "/acme/acme.json"  # Location to store Let's Encrypt certificates
+#       httpChallenge:
+#         entryPoint: "web"  # The entry point for HTTP challenges (must match the entry point defined above)
+
+# Optional: Basic Auth for the Dashboard (uncomment if needed)
+# http:
+#   middlewares:
+#     auth:
+#       basicAuth:
+#         users:
+#           - "admin:your-password"
+
+
+# Optional: Enable HTTPS (uncomment if you have SSL/TLS certificates)
+# certificatesResolvers:
+#   myresolver:
+#     acme:
+#       ...
+# tls:
+#   options:
+#     default:
+#       minVersion: VersionTLS13
+
+# Add your routers and services here for your application
+# Example:
+# http:
+#   routers:
+#     my-router:
+#       rule: Host(`example.com`)
+#       service: my-service
+#   services:
+#     my-service:
+#       ...
