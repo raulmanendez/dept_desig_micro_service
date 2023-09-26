@@ -20,7 +20,7 @@ services:
         - 33060
   eureka:
     build:
-      context: ./m_eureka_server/
+      context: ./backend_java/m_eureka_server/
     container_name: eureka-server-container
     restart: no    
     environment:
@@ -34,7 +34,7 @@ services:
       - 8761:8761
   gateway:
     build:
-      context: ./m_gateway/
+      context: ./backend_java/m_gateway/
     container_name: gateway-container
     restart: no    
     environment:
@@ -53,7 +53,7 @@ services:
       - 8080:8080
   department-service:
     build:
-      context: ./m_department_service/
+      context: ./backend_java/m_department_service/
     container_name: department-service-container
     restart: no    
     environment:
@@ -67,7 +67,7 @@ services:
     #   - 8081:8081     
   designation-service:
     build:
-      context: ./m_designation_service/
+      context: ./backend_java/m_designation_service/
     container_name: designation-service-container
     restart: no    
     environment:
@@ -81,7 +81,7 @@ services:
     #   - 8082:8082
   webapp:
     build:
-      context: ../frontend-angular
+      context: ./frontend-angular
     container_name: dept-desig-webapp
     restart: no    
     networks:

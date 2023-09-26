@@ -9,6 +9,7 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 80
+      nodePort: 32200
   type: NodePort
 
 ---
@@ -24,6 +25,7 @@ spec:
     - protocol: TCP
       port: 8761
       targetPort: 8761
+      nodePort: 32100
   type: NodePort
 
 ---
@@ -39,6 +41,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+      nodePort: 32000
   type: NodePort
 
 
@@ -55,7 +58,7 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-  type: NodePort
+  type: ClusterIP
 
 ---
 
@@ -70,4 +73,19 @@ spec:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-  type: NodePort
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: designation-service
+spec:
+  selector:
+    app: designation-app
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP

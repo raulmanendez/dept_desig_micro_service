@@ -131,3 +131,30 @@ spec:
         env:
             - name: spring.profiles.active
               value: kubectl
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: designation
+spec:
+  replicas: 1  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: designation-app
+  template:
+    metadata:
+      labels:
+        app: designation-app
+    spec:
+      containers:
+      - name: designation-container
+        image: backend_java-designation-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80  # Port your application listens on
+        env:
+            - name: spring.profiles.active
+              value: kubectl
