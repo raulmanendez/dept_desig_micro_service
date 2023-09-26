@@ -15,5 +15,119 @@ spec:
       containers:
       - name: webapp-container
         image: backend_java-webapp:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 80  # Port your application listens on
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka
+spec:
+  replicas: 1  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: eureka-app
+  template:
+    metadata:
+      labels:
+        app: eureka-app
+    spec:
+      containers:
+      - name: eureka-container
+        image: backend_java-eureka:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80  # Port your application listens on
+        env:
+            - name: spring.profiles.active
+              value: default
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: gateway-app
+  template:
+    metadata:
+      labels:
+        app: gateway-app
+    spec:
+      containers:
+      - name: gateway-container
+        image: backend_java-gateway:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80  # Port your application listens on
+        env:
+            - name: spring.profiles.active
+              value: kubectl
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:latest
+        imagePullPolicy: Never
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        hostPath:
+          path: /home/raul-manendez/mysql # Replace with the actual path on your host machine
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: department
+spec:
+  replicas: 1  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: department-app
+  template:
+    metadata:
+      labels:
+        app: department-app
+    spec:
+      containers:
+      - name: department-container
+        image: backend_java-department-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80  # Port your application listens on
+        env:
+            - name: spring.profiles.active
+              value: kubectl

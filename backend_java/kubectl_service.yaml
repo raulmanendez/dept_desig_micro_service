@@ -10,3 +10,64 @@ spec:
       port: 8000
       targetPort: 80
   type: NodePort
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-service
+spec:
+  selector:
+    app: eureka-app
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+  type: NodePort
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: gateway-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql-db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: NodePort
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: department-service
+spec:
+  selector:
+    app: department-app
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: NodePort
