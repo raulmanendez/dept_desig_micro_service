@@ -113,7 +113,7 @@ kind: Deployment
 metadata:
   name: department
 spec:
-  replicas: 1  # Number of desired replicas
+  replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
       app: department-app
@@ -140,7 +140,7 @@ kind: Deployment
 metadata:
   name: designation
 spec:
-  replicas: 1  # Number of desired replicas
+  replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
       app: designation-app

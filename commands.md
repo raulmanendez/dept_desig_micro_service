@@ -1,3 +1,22 @@
+Maven Skip Tests => mvn clean install -Dmaven.test.skip=true
+
+kubectl apply -f deployment_kubectl.yaml
+
+kubectl get node
+
+kubectl get deployments
+
+kubectl get service
+
+kubectl get pods
+
+kubectl delete pod department-584dfc5685-fftjf
+
+kubectl logs department-584dfc5685-fftjf -f
+
+
+
+
 Get Inside minikube => minikube ssh
 
 
