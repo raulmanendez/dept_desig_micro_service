@@ -14,6 +14,19 @@ kubectl delete pod department-584dfc5685-fftjf
 
 kubectl logs department-584dfc5685-fftjf -f
 
+kubectl get events
+
+kubectl get ingress
+
+minikube service web-app-service --url
+
+
+minikube start --addons=ingress
+
+kubectl get pods -n ingress-nginx
+
+kubectl logs -n ingress-nginx ingress-nginx-controller-7799c6795f-b8psf -f
+
 
 
 
