@@ -1,0 +1,95 @@
+version: '3'
+services:
+  backend:
+    image: my-be
+    container_name: my-backend
+    restart: always    
+    environment:
+      - "spring.profiles.active=prod"
+    networks:
+      - my-network
+    volumes:
+      - ${PWD}/uploads:/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.backend.tls.certresolver=myresolver"
+        - "traefik.http.routers.backend.rule=Host(`api.my-host.com`)"
+        - "traefik.http.services.backend.loadbalancer.server.port=8080"
+  db:
+    image: mysql
+    container_name: my-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_PASSWORD
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+        interval: 3s
+        retries: 5
+        start_period: 30s
+    networks:
+      - my-network
+    volumes:
+      - my_mysql_volume:/var/lib/mysql
+    expose:
+        - 3306
+        - 33060
+  frontend:
+      image: my-fe
+      container_name: my-webapp
+      restart: always
+      networks:
+        - my-network
+      depends_on:
+        - backend
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.webapp.tls.certresolver=myresolver"
+        - "traefik.http.routers.webapp.rule=Host(`app.my-host.com`)"
+  admin:
+      image: my-admin
+      container_name: my-admin
+      restart: always
+      networks:
+        - my-network
+      depends_on:
+        - backend
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.admin.tls.certresolver=myresolver"
+        - "traefik.http.routers.admin.rule=Host(`console.my-host.com`)"
+  website:
+      build:
+        context: ./website/
+      container_name: my-website
+      restart: always
+      networks:
+        - my-network
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.website.tls.certresolver=myresolver"
+        - "traefik.http.routers.website.rule=Host(`my-host.com`,`www.my-host.com`)"
+  traefik:
+    image: traefik:v2.5
+    container_name: traefik
+    networks:
+        - my-network
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/traefik.yml
+      - ./traefik/acme:/etc/traefik/acme
+      - ./traefik/log:/etc/traefik/log
+    labels:
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
+networks:
+  my-network: {}
+volumes:
+  my_mysql_volume:
+

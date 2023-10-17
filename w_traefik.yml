@@ -1,0 +1,33 @@
+api:
+  dashboard: true  # Enable the Traefik dashboard
+  insecure: true   # For simplicity; don't use in production
+
+entryPoints:
+  http:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  https:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false  # Only expose services explicitly
+    
+log:
+  filePath: "/etc/traefik/log/access.log"
+  level: INFO  # Adjust the log level as needed
+
+accessLog: {}  # Enable access logs
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: mail.client_host@yopmail.com  # Enter your email address for Let's Encrypt notifications
+      storage: "/etc/traefik/acme/acme.json"  # Location to store Let's Encrypt certificates
+      httpChallenge:
+        entryPoint: http  # The entry point for HTTP challenges (must match the entry point defined above)
