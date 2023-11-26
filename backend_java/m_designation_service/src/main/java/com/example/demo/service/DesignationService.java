@@ -20,12 +20,19 @@ public class DesignationService {
 	@Autowired
 	private DepartmentProxy departmentProxy;
 	
+	@Autowired
+	private LoggerProducer loggerService;
 	
 	public void add(Designation designation) {
+		loggerService.log("adding new designation with id "
+				.concat(String.valueOf(designation.getId())).concat(" name : "
+				.concat(designation.getName())));
+		
 		designationRepository.save(designation);
 	}
 	
 	public List<DesignationDTO> getAll() {
+		loggerService.log("getting all designations");
 		
 		List<DesignationDTO> list=new ArrayList<DesignationDTO>();
 		for(Designation designation:designationRepository.findAll()) {
@@ -64,10 +71,16 @@ public class DesignationService {
 	
 	
 	public Designation get(Long id) {
+		loggerService.log("getting designation with id"
+				.concat(String.valueOf(id)));
+		
 		return designationRepository.findById(id).get();
 	}
 	
 	public Designation remove(Long id) {
+		loggerService.log("removing designation with id"
+				.concat(String.valueOf(id)));
+		
 		Designation designation=get(id);
 		designationRepository.deleteById(id);
 		return designation;

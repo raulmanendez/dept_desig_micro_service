@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { DepartmentComponent } from './department/department.component';
 import { DesignationComponent } from './designation/designation.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoggerComponent } from './logger/logger.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DepartmentComponent,
-    DesignationComponent
+    DesignationComponent,
+    LoggerComponent
   ],
   imports: [
     BrowserModule,

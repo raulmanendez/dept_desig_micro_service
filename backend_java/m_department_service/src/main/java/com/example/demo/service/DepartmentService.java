@@ -20,12 +20,21 @@ public class DepartmentService {
 	@Autowired
 	private DesignationProxy designationProxy;
 	
+	@Autowired
+	private LoggerProducer loggerService;
+	
 	
 	public void add(Department department) {
+		loggerService.log("adding new department with id "
+				.concat(String.valueOf(department.getId())).concat(" name : "
+				.concat(department.getName())));
+		
 		departmentRepository.save(department);
 	}
 	
 	public List<Department> getAll() {
+		loggerService.log("getting all departments");
+		
 		return Streamable.of(departmentRepository.findAll()).toList();
 	}
 	
@@ -37,10 +46,16 @@ public class DepartmentService {
 	
 	
 	public Department get(Long id) {
+		loggerService.log("getting department with id"
+				.concat(String.valueOf(id)));
+		
 		return departmentRepository.findById(id).get();
 	}
 	
 	public Department remove(Long id) {
+		loggerService.log("removing department with id"
+				.concat(String.valueOf(id)));
+		
 		Department department=get(id);
 		departmentRepository.deleteById(id);
 		return department;
