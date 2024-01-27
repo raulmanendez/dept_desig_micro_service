@@ -25,5 +25,3 @@ hs_err_pid*
 frontend_angular/node_modules/
 frontend_angular/.angular/
 
-**/application.properties
-
